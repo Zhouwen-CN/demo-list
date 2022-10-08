@@ -12,7 +12,7 @@
         <module>shiro</module>
         <module>streamx-flink</module>
         <module>streamx-api</module>
-        <module>maven-springmvc</module>
+        <module>springmvc</module>
         <module>mybatis-plus-generate</module>
         <module>thymeleaf</module>
     </modules>
@@ -21,12 +21,4 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-        </dependency>
-    </dependencies>
 </project>
