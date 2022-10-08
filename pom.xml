@@ -12,6 +12,9 @@
         <module>shiro</module>
         <module>streamx-flink</module>
         <module>streamx-api</module>
+        <module>maven-springmvc</module>
+        <module>mybatis-plus-generate</module>
+        <module>thymeleaf</module>
     </modules>
 
     <properties>

@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <base th:href="${#request.getContextPath()}+'/'">
+</head>
+<body>
+<form th:action="@{add}" method="post" style="text-align: center">
+    <p>姓名: <input type="text" name="name"></p>
+    <p>年龄: <input type="number" name="age"></p>
+    <p><input type="submit" value="提交"></p>
+</form>
+</body>
+</html>

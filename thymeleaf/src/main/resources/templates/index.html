@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <base th:href="${#request.getContextPath()}+'/'">
+</head>
+<body>
+<table align="center" border="1">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>age</th>
+        <th>ops</th>
+    </tr>
+    <tr th:each="item:${users}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.age}"></td>
+        <td>
+            <a th:href="@{update/{id}(id=${item.id})}">修改</a>
+            <a th:href="@{del/{id}(id=${item.id})}">删除</a>
+        </td>
+    </tr>
+    <tr>
+        <th colspan="4"><a th:href="@{add}">新增</a></th>
+    </tr>
+</table>
+<form action="JavaScript:" style="text-align: center" id="myform">
+    <p>name: <input type="text" name="name"></p>
+    <p>age: <input type="number" name="age"></p>
+    <p><input th:onclick="test()" type="submit" value="提交"></p>
+</form>
+</body>
+</html>
+<script type="text/javascript" th:src="@{js/jquery-3.5.1.min.js}"></script>
+<script th:inline="javascript">
+    function test() {
+        var name = $('[name="name"]').val()
+        var age = $('[name="age"]').val()
+        if (name.trim() === "" || age.trim() === "") {
+            alert("请正确输入")
+        } else {
+            var myform = $('#myform').serialize()
+            $.post("/login", myform, function (result) {
+                console.log(result)
+            })
+        }
+    }
+</script>
