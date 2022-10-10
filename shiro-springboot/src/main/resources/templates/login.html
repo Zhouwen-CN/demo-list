@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <base th:href="${#request.getContextPath()}+'/'">
+</head>
+<body>
+<form th:action="@{login}" method="post">
+    <div>用户名: <input type="text" name="username" ></div>
+    <div>密码: <input type="password" name="password" ></div>
+    <div>记住用户：<input type="checkbox" name="rememberMe" value="true"></div>
+    <div><input type="submit" value="提交"></div>
+</form>
+</body>
+</html>

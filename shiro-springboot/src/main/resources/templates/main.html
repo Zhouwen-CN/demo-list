@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <base th:href="${#request.getContextPath()}+'/'">
+</head>
+<body>
+登入的用户为: <span th:text="${session.user}"></span>
+<br/>
+<a th:href="@{logout}">登出</a>
+<a th:href="@{admin}">测试授权</a>
+</body>
+</html>

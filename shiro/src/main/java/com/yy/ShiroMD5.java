@@ -6,7 +6,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 public class ShiroMD5 {
     public static void main(String[] args) {
         //密码明文
-        String password = "z3";
+        String password = "l4";
 
         Md5Hash md5Hash = new Md5Hash(password);
         System.out.println("md5加密: " + md5Hash.toHex());
