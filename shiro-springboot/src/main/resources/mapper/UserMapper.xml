@@ -29,4 +29,26 @@
             )
         )
   </select>
+  <select id="getUserPremonitionsInfo" resultType="java.lang.String">
+        select
+            name
+        from t_permission
+        where id in(
+            select
+                pid
+            from t_role_ps
+            where rid in(
+                select
+                    id
+                from t_role
+                where name in
+                <foreach collection="roles" item="name" open="(" separator="," close=")">
+                    ${name}
+                </foreach>
+
+            )
+        )
+  </select>
+
+
 </mapper>

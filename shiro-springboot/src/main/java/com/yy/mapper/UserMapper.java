@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface UserMapper extends BaseMapper<User> {
     List<String> getUserRoleInfo(@Param("principle") String principle);
+
+    List<String> getUserPremonitionsInfo(@Param("roles") List<String> roles);
 }

@@ -15,6 +15,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,11 +31,14 @@ public class MyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        // 1.创建对象,封装当前登入用户的角色,权限信息
+        // 1.获取用户身份信息
+        String principle = principals.getPrimaryPrincipal().toString();
+        // 2.调用业务层,获取用户的角色信息
+        List<String> roles = userService.getUserRoleInfo(principle);
+        // 3.创建对象,封装当前登入用户的角色,权限信息
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        // 2.存储角色
-        simpleAuthorizationInfo.addRole("admin");
-        // 3.返回信息
+        simpleAuthorizationInfo.addRoles(roles);
+
         return simpleAuthorizationInfo;
     }
 
@@ -47,10 +51,10 @@ public class MyRealm extends AuthorizingRealm {
         // 3.非空判断,将数据完成封装
         if (Optional.ofNullable(user).isPresent()) {
             return new SimpleAuthenticationInfo(
-                token.getPrincipal(),
-                user.getPassword(),
-                ByteSource.Util.bytes("salt"),
-                username
+                    token.getPrincipal(),
+                    user.getPassword(),
+                    ByteSource.Util.bytes("salt"),
+                    username
             );
         }
 
