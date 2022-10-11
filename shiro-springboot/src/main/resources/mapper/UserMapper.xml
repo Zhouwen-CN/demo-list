@@ -43,7 +43,7 @@
                 from t_role
                 where name in
                 <foreach collection="roles" item="name" open="(" separator="," close=")">
-                    ${name}
+                    #{name}
                 </foreach>
 
             )

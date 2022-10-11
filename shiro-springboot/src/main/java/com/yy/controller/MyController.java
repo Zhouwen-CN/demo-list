@@ -4,6 +4,7 @@ import com.yy.domain.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
@@ -69,6 +70,14 @@ public class MyController {
     @ResponseBody
     public String toAdmin(){
         return "角色验证成功";
+    }
+
+
+    @RequiresPermissions("user:add")
+    @GetMapping("/user/add")
+    @ResponseBody
+    public String userAdd(){
+        return "权限验证成功";
     }
 }
 

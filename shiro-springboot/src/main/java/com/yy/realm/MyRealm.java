@@ -33,11 +33,13 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         // 1.获取用户身份信息
         String principle = principals.getPrimaryPrincipal().toString();
-        // 2.调用业务层,获取用户的角色信息
+        // 2.调用业务层,获取用户的角色信息 and 权限信息
         List<String> roles = userService.getUserRoleInfo(principle);
+        List<String> premonitions = userService.getUserPremonitionsInfo(roles);
         // 3.创建对象,封装当前登入用户的角色,权限信息
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRoles(roles);
+        simpleAuthorizationInfo.addStringPermissions(premonitions);
 
         return simpleAuthorizationInfo;
     }

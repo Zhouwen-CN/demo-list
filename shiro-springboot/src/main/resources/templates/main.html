@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<html lang="ch" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -9,6 +10,7 @@
 登入的用户为: <span th:text="${session.user}"></span>
 <br/>
 <a th:href="@{logout}">登出</a>
-<a th:href="@{admin}">测试授权</a>
+<a shiro:hasRole="admin" th:href="@{admin}">测试角色鉴定</a>
+<a shiro:hasPermission="user:add" th:href="@{user/add}">测试权限鉴定</a>
 </body>
 </html>

@@ -1,7 +1,9 @@
 package com.yy.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.yy.realm.MyRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -36,11 +38,16 @@ public class ShiroConfig {
         defaultWebSecurityManager.setRealm(myRealm);
         // 5.设置remember me
         defaultWebSecurityManager.setRememberMeManager(cookieRememberMeManager());
-        // 6.设置session
+        // 6.设置缓存
+        defaultWebSecurityManager.setCacheManager(getEhCacheManager());
+        // 7.设置session
         // defaultWebSecurityManager.setSessionManager(sessionManager());
-        // 7.返回
+
         return defaultWebSecurityManager;
     }
+
+
+
 
     // session 设置
     public SessionManager sessionManager() {
@@ -48,6 +55,13 @@ public class ShiroConfig {
         //  设置保留工夫；默认是30分钟
         sessionManager.setGlobalSessionTimeout(60*60*1000);
         return sessionManager;
+    }
+
+    // 缓存设置
+    private EhCacheManager getEhCacheManager() {
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManagerConfigFile("classpath:ehcache/ehcache-shiro.xml");
+        return ehCacheManager;
     }
 
     // cookie设置
@@ -79,5 +93,10 @@ public class ShiroConfig {
         // 添加存在用户的过滤器（rememberMe）
         definition.addPathDefinition("/**","user");
         return definition;
+    }
+
+    @Bean
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
     }
 }
