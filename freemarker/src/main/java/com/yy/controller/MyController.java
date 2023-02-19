@@ -15,10 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Author: chen
@@ -27,6 +30,43 @@ import java.util.HashMap;
  */
 @Controller
 public class MyController {
+    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private final AtomicReference<String> flag = new AtomicReference<>("");
+    private final AtomicLong atomicLong = new AtomicLong(0);
+
+    /**
+     * 帮朋友写的,每天序列号得重置
+     */
+    @RequestMapping("/test")
+    @ResponseBody
+    public void test() {
+
+        String dataDate = this.format.format(new Date());
+
+        // 时间发生变化
+        while (!flag.get().equals(dataDate)) {
+            /*
+             * 情况 1: 假设有两个线程同时进入
+             *        第一个线程CAS成功,重置序列值
+             *        第二个线程设置失败,重新开始循环,再次get equals相等,退出循环
+             *        所需while循环需要动态获取eventDate的值
+             *
+             * 情况 2: 假设有两个线程同时进入
+             *        第一个CAS成功,重置序列
+             *        第二个才刚刚走到get,拿到的是最新的值,又CAS成功,重置序列
+             *        所以if里面还需要判断两个时间不相等
+             *  */
+            String currentEventDate = flag.get();
+            if (!currentEventDate.equals(dataDate) && flag.compareAndSet(currentEventDate, dataDate)) {
+                atomicLong.set(0);
+                break;
+            }
+        }
+
+        System.out.printf("当前时间是: %s\t当前序列值:%s%n", flag, atomicLong.incrementAndGet());
+    }
+
+
     @RequestMapping("/dataType")
     public String dataType(Model model) {
 
@@ -61,6 +101,7 @@ public class MyController {
     public String import_template() {
         return "import";
     }
+
     @GetMapping("/include")
     public String include() {
         return "include";
@@ -93,15 +134,15 @@ public class MyController {
 
 
         // render出去
-        FileWriter fileWriter=null;
+        FileWriter fileWriter = null;
         try {
-            File file= new File("news.html");
+            File file = new File("news.html");
             fileWriter = new FileWriter(file);
-            template.process(map,fileWriter);
+            template.process(map, fileWriter);
         } catch (TemplateException e) {
             e.printStackTrace();
-        }finally {
-            if (null!=fileWriter) {
+        } finally {
+            if (null != fileWriter) {
                 fileWriter.close();
             }
         }

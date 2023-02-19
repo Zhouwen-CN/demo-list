@@ -15,6 +15,7 @@
         <module>thymeleaf</module>
         <module>shiro-springboot</module>
         <module>freemarker</module>
+        <module>springmvc-anno</module>
     </modules>
 
     <properties>
