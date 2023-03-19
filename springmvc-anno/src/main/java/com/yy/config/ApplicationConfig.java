@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.sql.DataSource;
@@ -22,9 +21,12 @@ import javax.sql.DataSource;
         @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Controller.class, ControllerAdvice.class})
 })
 @PropertySource("classpath:jdbc.properties")
-@EnableTransactionManagement
 @MapperScan("com.yy.dao")
-@Import({MybatisPlusConfig.class})
+@Import({MybatisPlusConfig.class, TransactionAdviceConfig.class})
+// 开启基于aop的事务管理
+@EnableAspectJAutoProxy
+// 开启基于注解的事务管理
+// @EnableTransactionManagement
 public class ApplicationConfig {
     @Value("${jdbc.jdbcUrl}")
     private String url;

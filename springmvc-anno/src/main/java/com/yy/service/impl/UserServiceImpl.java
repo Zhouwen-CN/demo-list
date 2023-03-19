@@ -6,7 +6,6 @@ import com.yy.entity.User;
 import com.yy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -22,7 +21,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     UserMapper userMapper;
 
     @Override
-    @Transactional
     public String insertUser() {
         User user = new User(null, UUID.randomUUID().toString().substring(0, 5), 18);
         int num = userMapper.insert(user);
